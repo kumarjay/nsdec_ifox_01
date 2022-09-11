@@ -1,5 +1,10 @@
+import csv
+
 import flask
 from flask import Flask, render_template, request, flash
+import pandas as pd
+from test_csv import get_name_enrollment
+import logging, datetime
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -15,14 +20,25 @@ def enrollment():
     message = False
     name= False
     if flask.request.method == 'POST':
+        timenow = datetime.datetime.now()
+        logging.root.setLevel(logging.WARNING)
+        logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s — %(levelname)s - %(message)s')
 
         name = request.form.get('fname')
         name = name.upper()
         enrollment = request.form.get('enrollment')
-        if enrollment == 'DME/5442' and name == 'Jay'.upper():
-            message = True
-        else:
-            message = 'NotTrue'
+        entry = get_name_enrollment(name, enrollment)
+        logging.info('hellloooooo')
+        with open('users.csv', 'a', newline='') as f:
+            f = csv.writer(f)
+            if entry:
+                message = True
+                f.writerow([f'{timenow} - INFO - {name} checked their status'])
+                logging.warning(f'{name} checked their status')
+            else:
+                message = 'NotTrue'
+                f.writerow([f'{timenow} - WARNING - {name} - {enrollment} checked'])
+                logging.error(f'{name} - {enrollment} checked')
     return render_template('enrollment.html', message=message, name=name)
 
 
