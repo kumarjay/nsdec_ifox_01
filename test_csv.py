@@ -25,7 +25,7 @@ def get_name_enrollment(name, enrollment):
     # print(data.shape)
     entry = False
     for ind in range(data.shape[1]):
-        if data.iloc[ind]['name'] == name.title() and data.iloc[ind]['enrollment'] == enrollment:
+        if data.iloc[ind]['name'].upper() == name.upper() and data.iloc[ind]['enrollment'] == enrollment:
             entry = True
     return entry
 

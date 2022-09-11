@@ -28,7 +28,7 @@ def enrollment():
         name = name.upper()
         enrollment = request.form.get('enrollment')
         entry = get_name_enrollment(name, enrollment)
-        logging.info('hellloooooo')
+        # logging.info('hellloooooo')
         with open('users.csv', 'a', newline='') as f:
             f = csv.writer(f)
             if entry:
