@@ -24,9 +24,14 @@ def get_name_enrollment(name, enrollment):
     data = pd.read_csv('enrollments.csv')
     # print(data.shape)
     entry = False
-    for ind in range(data.shape[1]):
+    branch = False
+    year = False
+    for ind in range(data.shape[0]):
         if data.iloc[ind]['name'].upper() == name.upper() and data.iloc[ind]['enrollment'] == enrollment:
-            entry = True
-    return entry
+            # entry = True
+            branch = data.iloc[ind]['branch']
+            year = data.iloc[ind]['year']
+    print(branch, '  ', year)
+    return branch, year
 
 # get_name_enrollment('aa', 'bb')

@@ -19,6 +19,9 @@ def index():
 def enrollment():
     message = False
     name= False
+    branch = False
+    year= False
+    enrollment= False
     if flask.request.method == 'POST':
         timenow = datetime.datetime.now()
         logging.root.setLevel(logging.WARNING)
@@ -27,11 +30,12 @@ def enrollment():
         name = request.form.get('fname')
         name = name.upper()
         enrollment = request.form.get('enrollment')
-        entry = get_name_enrollment(name, enrollment)
+        branch, year = get_name_enrollment(name, enrollment)
+        print(branch, ' ', year)
         # logging.info('hellloooooo')
         with open('users.csv', 'a', newline='') as f:
             f = csv.writer(f)
-            if entry:
+            if branch:
                 message = True
                 f.writerow([f'{timenow} - INFO - {name} checked their status'])
                 logging.warning(f'{name} checked their status')
@@ -39,7 +43,7 @@ def enrollment():
                 message = 'NotTrue'
                 f.writerow([f'{timenow} - WARNING - {name} - {enrollment} checked'])
                 logging.error(f'{name} - {enrollment} checked')
-    return render_template('enrollment.html', message=message, name=name)
+    return render_template('enrollment.html', message=message, name=name, branch=branch, year=year, enrollment=enrollment)
 
 
 @app.route('/enrollment_action', methods=['GET', 'POST'])
